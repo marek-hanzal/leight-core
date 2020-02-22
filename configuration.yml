@@ -1,0 +1,10 @@
+version: 1
+type: gradle
+useWrapper: true
+resolver:
+  repo: leight
+  serverID: Default-Server
+deployer:
+  repo: leight.local
+  serverID: Default-Server
+  deployMavenDescriptors: true
