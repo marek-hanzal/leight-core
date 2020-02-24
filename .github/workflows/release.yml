@@ -32,4 +32,5 @@ jobs:
           VERSION=$(echo "${GITHUB_REF}" | cut -d "/" -f3)
           echo "New version: ${VERSION}"
           echo "Github username: ${GITHUB_ACTOR}"
+          chmod +x gradlew
           ./gradlew -Pversion=${VERSION} publish
