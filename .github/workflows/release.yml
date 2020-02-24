@@ -17,14 +17,6 @@ jobs:
         with:
           java-version: 11
 
-      - name: Cache
-        uses: actions/cache@v1
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
       - name: Publish artifact
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -33,4 +25,4 @@ jobs:
           echo "New version: ${VERSION}"
           echo "Github username: ${GITHUB_ACTOR}"
           chmod +x gradlew
-          ./gradlew -Pversion=${VERSION} publish
+          ./gradlew --no-daemon -Pversion=${VERSION} publish
