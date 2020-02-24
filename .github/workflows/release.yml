@@ -22,7 +22,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION=$(echo "${GITHUB_REF}" | cut -d "/" -f3)
-          echo "New version: ${VERSION}"
-          echo "Github username: ${GITHUB_ACTOR}"
+          echo "Version: ${VERSION}"
           chmod +x gradlew
           ./gradlew --no-daemon -Pversion=${VERSION} publish
