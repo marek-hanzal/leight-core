@@ -24,8 +24,8 @@ class LinkGeneratorTest {
             create(ILinkGenerator::class).apply {
                 assertEquals("https://temny-svet:4321/chlupat%C3%A1+p%C3%AD%C4%8Da", encoded("chlupatá píča").toString())
                 assertEquals("https://temny-svet:4321/chlupat%C3%A1+p%C3%AD%C4%8Da?ahoj=true&foo=bar", encoded("chlupatá píča") { set("ahoj", "true"); set("foo", "bar") }.toString())
-                assertEquals("https://temny-svet:4321/abc/cde/fga a/q?kopa=hoven", href("abc/cde/fga a/q") { set("kopa", "hoven") }.toString())
-                assertEquals("https://temny-svet:4321/abc/cde/fga a/q", href("abc/cde/fga a/q").toString())
+                assertEquals("https://temny-svet:4321/abc/cde/fga a/q?kopa=hoven", link("abc/cde/fga a/q") { set("kopa", "hoven") }.toString())
+                assertEquals("https://temny-svet:4321/abc/cde/fga a/q", link("abc/cde/fga a/q").toString())
             }
         }
     }

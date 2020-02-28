@@ -1,16 +1,16 @@
 package rocks.leight.core.api.job
 
-import rocks.leight.core.job.JobEntity
+import rocks.leight.core.job.entity.Job
 
 internal interface IJobExecutor : Runnable {
     fun start()
 
-    fun enqueue(jobs: List<JobEntity>)
+    fun enqueue(jobs: List<Job>)
 
     /**
      * block if the execution queue is full (await job execution)
      */
-    fun execute(jobEntity: JobEntity)
+    fun execute(jobEntity: Job)
 
     /**
      * count of active threads (approx)

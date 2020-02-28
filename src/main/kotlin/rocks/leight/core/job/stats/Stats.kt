@@ -1,4 +1,4 @@
-package rocks.leight.core.job
+package rocks.leight.core.job.stats
 
 import rocks.leight.core.api.job.IStats
 import rocks.leight.core.api.job.IStatusStats

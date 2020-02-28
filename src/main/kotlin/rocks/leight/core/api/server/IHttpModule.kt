@@ -1,7 +1,7 @@
 package rocks.leight.core.api.server
 
-import io.ktor.application.Application
+import io.ktor.routing.Routing
 
 interface IHttpModule {
-    fun install(application: Application)
+    fun install(routing: Routing)
 }

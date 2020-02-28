@@ -6,6 +6,8 @@ import rocks.leight.core.api.container.IContainer
 import rocks.leight.core.api.job.IJobController
 import rocks.leight.core.api.job.IJobScheduler
 import rocks.leight.core.api.storage.IStorage
+import rocks.leight.core.job.entity.Job
+import rocks.leight.core.job.entity.JobTable
 import java.util.*
 import kotlin.math.max
 import kotlin.math.min
@@ -24,7 +26,7 @@ internal class JobController(container: IContainer) : IJobController {
                 jobScheduler.schedule()
                 Thread.sleep(storage.read {
                     try {
-                        max(jobConfig.shallowSleep, min(jobConfig.deepSleep, JobEntity.find { JobTable.state eq JobState.CREATED }.orderBy(JobTable.schedule to SortOrder.ASC).limit(1).first().timeout))
+                        max(jobConfig.shallowSleep, min(jobConfig.deepSleep, Job.find { JobTable.state eq JobState.CREATED }.orderBy(JobTable.schedule to SortOrder.ASC).limit(1).first().timeout))
                     } catch (e: NoSuchElementException) {
                         this@JobController.logger.debug { "Run: No more jobs, going to deep sleep for ${jobConfig.deepSleep}ms" }
                         jobConfig.deepSleep

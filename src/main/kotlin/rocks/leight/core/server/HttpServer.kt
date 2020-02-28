@@ -5,6 +5,7 @@ import io.ktor.features.*
 import io.ktor.gson.gson
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
+import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import mu.KotlinLogging
@@ -44,7 +45,7 @@ class HttpServer(private val container: IContainer) : AbstractConfigurable<IHttp
             }
             modules.forEach {
                 logger.debug { "Setup: Installing module [${it.qualifiedName}]" }
-                container.create(it).install(this)
+                this.routing { container.create(it).install(this) }
             }
             if (modules.isEmpty()) {
                 logger.warn { "Setup: There are no registered modules!" }

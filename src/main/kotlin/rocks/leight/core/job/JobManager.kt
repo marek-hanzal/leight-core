@@ -7,6 +7,8 @@ import rocks.leight.core.api.container.IContainer
 import rocks.leight.core.api.job.*
 import rocks.leight.core.api.message.IMessage
 import rocks.leight.core.api.storage.IStorage
+import rocks.leight.core.job.entity.Job
+import rocks.leight.core.job.entity.JobTable
 import rocks.leight.core.utils.asStamp
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -29,7 +31,7 @@ class JobManager(container: IContainer) : IJobManager {
         logger.debug { "Start: Done" }
     }
 
-    override fun create(message: IMessage, schedule: DateTime, priority: Int) = JobEntity.new {
+    override fun create(message: IMessage, schedule: DateTime, priority: Int) = Job.new {
         if (priority > 999 || priority < 0) {
             throw JobException("Hey, quite invalid priority for me, keep it between [0..999], ok?")
         }

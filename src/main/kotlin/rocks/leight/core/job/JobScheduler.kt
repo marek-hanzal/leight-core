@@ -9,6 +9,8 @@ import rocks.leight.core.api.container.IContainer
 import rocks.leight.core.api.job.IJobExecutor
 import rocks.leight.core.api.job.IJobScheduler
 import rocks.leight.core.api.storage.IStorage
+import rocks.leight.core.job.entity.Job
+import rocks.leight.core.job.entity.JobTable
 import java.util.concurrent.Semaphore
 
 internal class JobScheduler(container: IContainer) : IJobScheduler {
@@ -43,7 +45,7 @@ internal class JobScheduler(container: IContainer) : IJobScheduler {
                     continue
                 }
                 storage.write {
-                    JobEntity.find { JobTable.state eq JobState.CREATED and (JobTable.schedule lessEq DateTime()) }.orderBy(JobTable.sort to SortOrder.ASC).limit(jobConfig.limit).toList().map { it.state = JobState.SCHEDULED; it }
+                    Job.find { JobTable.state eq JobState.CREATED and (JobTable.schedule lessEq DateTime()) }.orderBy(JobTable.sort to SortOrder.ASC).limit(jobConfig.limit).toList().map { it.state = JobState.SCHEDULED; it }
                 }.let {
                     if (it.count() > 0) {
                         this@JobScheduler.logger.debug { "Scheduler: Job count #${jobExecutor.count()}, new jobs #${it.count()}" }

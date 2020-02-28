@@ -6,6 +6,7 @@ import rocks.leight.core.api.container.IContainer
 import rocks.leight.core.api.job.IJobExecutor
 import rocks.leight.core.api.message.IMessageBus
 import rocks.leight.core.api.storage.IStorage
+import rocks.leight.core.job.entity.Job
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.util.concurrent.LinkedBlockingQueue
@@ -20,7 +21,7 @@ internal class JobExecutor(container: IContainer) : IJobExecutor {
     private val logger = KotlinLogging.logger { }
     private val executorSemaphore = Semaphore(0)
     private val jobSemaphore = Semaphore(jobConfig.limit)
-    private val queue = LinkedBlockingQueue<JobEntity>(jobConfig.limit * 4)
+    private val queue = LinkedBlockingQueue<Job>(jobConfig.limit * 4)
     private val executor by lazy {
         ScheduledThreadPoolExecutor(jobConfig.workers).apply {
             removeOnCancelPolicy = true
@@ -58,7 +59,7 @@ internal class JobExecutor(container: IContainer) : IJobExecutor {
         logger.debug { "Run: Finished" }
     }
 
-    override fun enqueue(jobs: List<JobEntity>) {
+    override fun enqueue(jobs: List<Job>) {
         logger.debug { "Enqueue: Adding #${jobs.count()} new jobs" }
         queue.addAll(jobs)
         logger.debug { "Enqueue: Releasing #${jobs.count()} new tickets" }
@@ -66,9 +67,9 @@ internal class JobExecutor(container: IContainer) : IJobExecutor {
         logger.debug { "Enqueue: Enqueued #${jobs.count()} new items, current queue size #${queue.count()}, ticket count #${executorSemaphore.availablePermits()}" }
     }
 
-    override fun execute(jobEntity: JobEntity) {
+    override fun execute(jobEntity: Job) {
         MDC.put("jobId", jobEntity.id.toString())
-        fun commit(start: Long, jobEntity: JobEntity, jobState: JobState) {
+        fun commit(start: Long, jobEntity: Job, jobState: JobState) {
             val runtime = (System.currentTimeMillis() - start).toInt()
             jobEntity.state = jobState
             if (jobConfig.runtimeThreshold in 1..(runtime - 1)) {
