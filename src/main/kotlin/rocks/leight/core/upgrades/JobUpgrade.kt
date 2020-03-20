@@ -6,5 +6,5 @@ import rocks.leight.core.job.entity.JobTable
 import rocks.leight.core.upgrade.AbstractUpgrade
 
 class JobUpgrade(container: IContainer) : AbstractUpgrade(container) {
-    override fun upgrade() = storage.transaction { SchemaUtils.create(JobTable) }
+	override fun upgrade() = storage.transaction { SchemaUtils.create(JobTable) }
 }

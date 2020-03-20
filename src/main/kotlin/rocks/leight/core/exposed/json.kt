@@ -16,28 +16,28 @@ import java.sql.PreparedStatement
 data class JsonMessage(val klazz: String, val message: String)
 
 fun Table.jsonb(name: String): Column<IMessage> = registerColumn(name, object : ColumnType() {
-    override fun sqlType() = "text"
+	override fun sqlType() = "text"
 
-    override fun setParameter(stmt: PreparedStatement, index: Int, value: Any?) = stmt.setObject(index, value)
+	override fun setParameter(stmt: PreparedStatement, index: Int, value: Any?) = stmt.setObject(index, value)
 
-    override fun valueFromDB(value: Any): Any = when (value) {
-        is IMessage -> value
-        is Clob -> klaxon(value.asciiStream)
-        is String -> klaxon(value.byteInputStream())
-        else -> throw CoreException("Cannot convert unsupported value from database value [${value::class.qualifiedName}]")
-    }
+	override fun valueFromDB(value: Any): Any = when (value) {
+		is IMessage -> value
+		is Clob -> klaxon(value.asciiStream)
+		is String -> klaxon(value.byteInputStream())
+		else -> throw CoreException("Cannot convert unsupported value from database value [${value::class.qualifiedName}]")
+	}
 
-    override fun notNullValueToDB(value: Any): Any = message(value)
+	override fun notNullValueToDB(value: Any): Any = message(value)
 
-    override fun nonNullValueToString(value: Any): String = "'${message(value)}'"
+	override fun nonNullValueToString(value: Any): String = "'${message(value)}'"
 
-    private fun klaxon(stream: InputStream): IMessage = Klaxon().run {
-        val jsonMessage = fromJsonObject(parser(JsonMessage::class).parse(stream) as JsonObject, JsonMessage::class.java, JsonMessage::class) as JsonMessage
-        val klazz = Class.forName(jsonMessage.klazz).kotlin
-        fromJsonObject(parser(klazz).parse(jsonMessage.message.byteInputStream()) as JsonObject, klazz.java, klazz) as IMessage
-    }
+	private fun klaxon(stream: InputStream): IMessage = Klaxon().run {
+		val jsonMessage = fromJsonObject(parser(JsonMessage::class).parse(stream) as JsonObject, JsonMessage::class.java, JsonMessage::class) as JsonMessage
+		val klazz = Class.forName(jsonMessage.klazz).kotlin
+		fromJsonObject(parser(klazz).parse(jsonMessage.message.byteInputStream()) as JsonObject, klazz.java, klazz) as IMessage
+	}
 
-    private fun message(value: Any) = Klaxon().run {
-        toJsonString(JsonMessage(value::class.qualifiedName!!, toJsonString(value)))
-    }
+	private fun message(value: Any) = Klaxon().run {
+		toJsonString(JsonMessage(value::class.qualifiedName!!, toJsonString(value)))
+	}
 })

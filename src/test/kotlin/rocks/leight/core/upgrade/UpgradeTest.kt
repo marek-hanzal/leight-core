@@ -19,65 +19,65 @@ import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
 class UpgradeTest {
-    @Test
-    fun `create by a Container`() {
-        val container = ContainerFactory.container()
-        assertSame(container.create(IUpgradeManager::class), container.create(IUpgradeManager::class))
-    }
+	@Test
+	fun `create by a Container`() {
+		val container = ContainerFactory.container()
+		assertSame(container.create(IUpgradeManager::class), container.create(IUpgradeManager::class))
+	}
 
-    @Test
-    fun `empty version works`() {
-        assertNull(ContainerFactory.container().create(IVersionService::class).getVersion())
-    }
+	@Test
+	fun `empty version works`() {
+		assertNull(ContainerFactory.container().create(IVersionService::class).getVersion())
+	}
 
-    @Test
-    fun `exclude already installed upgrade`() {
-        ContainerFactory.container().apply {
-            register(PoolConfig::class) {
-                ConfigFactory.load().extract("core.pool")
-            }
-            configurator(IUpgradeManager::class) {
-                register(u001::class)
-                register(u002::class)
-                register(u003::class)
-            }
-            create(IStorage::class).apply { setup() }.transaction {
-                SchemaUtils.drop(UpgradeTable)
-            }
-            create(IVersionService::class).apply { setup(); upgrade(create(u001::class)) }.also { versionService ->
-                with(create(IUpgradeManager::class)) {
-                    setup()
-                    upgrade()
-                }
-                assertEquals(listOf<KClass<out IUpgrade>>(u002::class, u003::class), create(SomeStateClass::class).upgrades)
-                assertEquals(u003::class.qualifiedName, versionService.getVersion())
-            }
-        }
-    }
+	@Test
+	fun `exclude already installed upgrade`() {
+		ContainerFactory.container().apply {
+			register(PoolConfig::class) {
+				ConfigFactory.load().extract("core.pool")
+			}
+			configurator(IUpgradeManager::class) {
+				register(u001::class)
+				register(u002::class)
+				register(u003::class)
+			}
+			create(IStorage::class).apply { setup() }.transaction {
+				SchemaUtils.drop(UpgradeTable)
+			}
+			create(IVersionService::class).apply { setup(); upgrade(create(u001::class)) }.also { versionService ->
+				with(create(IUpgradeManager::class)) {
+					setup()
+					upgrade()
+				}
+				assertEquals(listOf<KClass<out IUpgrade>>(u002::class, u003::class), create(SomeStateClass::class).upgrades)
+				assertEquals(u003::class.qualifiedName, versionService.getVersion())
+			}
+		}
+	}
 
-    @Test
-    fun `conditional upgrade`() {
-        ContainerFactory.container().apply {
-            register(PoolConfig::class) {
-                ConfigFactory.load().extract("core.pool")
-            }
-            configurator(IUpgradeManager::class) {
-                register(u001::class)
-                register(u002::class)
-                register(u003::class)
-            }
-            create(IStorage::class).apply { setup() }.transaction {
-                SchemaUtils.drop(UpgradeTable)
-            }
-            create(IVersionService::class).apply { setup() }.upgrade(create(u001::class))
-            with(create(IUpgradeManager::class)) {
-                setup()
-                upgrade()
-            }
-            with(create(SomeStateClass::class)) {
-                assertTrue(up1) // isInstalled
-                assertTrue(up2) // isCurrent
-            }
-        }
-    }
+	@Test
+	fun `conditional upgrade`() {
+		ContainerFactory.container().apply {
+			register(PoolConfig::class) {
+				ConfigFactory.load().extract("core.pool")
+			}
+			configurator(IUpgradeManager::class) {
+				register(u001::class)
+				register(u002::class)
+				register(u003::class)
+			}
+			create(IStorage::class).apply { setup() }.transaction {
+				SchemaUtils.drop(UpgradeTable)
+			}
+			create(IVersionService::class).apply { setup() }.upgrade(create(u001::class))
+			with(create(IUpgradeManager::class)) {
+				setup()
+				upgrade()
+			}
+			with(create(SomeStateClass::class)) {
+				assertTrue(up1) // isInstalled
+				assertTrue(up2) // isCurrent
+			}
+		}
+	}
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="OPEN_SSH" host="docker" id="01dbcea3-4b72-4e68-9c55-238930ceb2c1" port="22" />
+      <sshConfig authType="OPEN_SSH" host="docker" id="60b39942-684b-4321-828b-a200bd25a496" port="22" />
+    </configs>
+  </component>
+</project>

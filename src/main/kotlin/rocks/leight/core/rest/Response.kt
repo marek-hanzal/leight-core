@@ -9,7 +9,7 @@ import rocks.leight.core.rest.discovery.Discovery
 data class MessageResponse(val message: String)
 data class ErrorResponse(val error: String)
 data class LinkResponse(val href: String) {
-    constructor(href: Url) : this(href.toString())
+	constructor(href: Url) : this(href.toString())
 }
 
 /**

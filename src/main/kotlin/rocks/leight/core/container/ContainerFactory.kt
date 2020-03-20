@@ -31,38 +31,38 @@ import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
 object ContainerFactory {
-    fun container() = Container().apply {
-        registerSystemServices()
-        registerStorageServices()
-        registerJobServices()
-        registerHttpServices()
-    }
+	fun container() = Container().apply {
+		registerSystemServices()
+		registerStorageServices()
+		registerJobServices()
+		registerHttpServices()
+	}
 
-    private fun IContainer.registerSystemServices() {
-        register(IContainer::class) { this }
-        register(IUpgradeManager::class, UpgradeManager::class)
-        register(IVersionService::class, VersionService::class)
-        register(IMessageBus::class, MessageBus::class)
-    }
+	private fun IContainer.registerSystemServices() {
+		register(IContainer::class) { this }
+		register(IUpgradeManager::class, UpgradeManager::class)
+		register(IVersionService::class, VersionService::class)
+		register(IMessageBus::class, MessageBus::class)
+	}
 
-    private fun IContainer.registerStorageServices() {
-        register(IStorage::class, Storage::class)
-        register(IPool::class, Pool::class)
-    }
+	private fun IContainer.registerStorageServices() {
+		register(IStorage::class, Storage::class)
+		register(IPool::class, Pool::class)
+	}
 
-    private fun IContainer.registerJobServices() {
-        register(IJobScheduler::class, JobScheduler::class)
-        register(IJobManager::class, JobManager::class)
-        register(IJobExecutor::class, JobExecutor::class)
-        register(IJobController::class, JobController::class)
-        register(IJobStats::class, JobStats::class)
-    }
+	private fun IContainer.registerJobServices() {
+		register(IJobScheduler::class, JobScheduler::class)
+		register(IJobManager::class, JobManager::class)
+		register(IJobExecutor::class, JobExecutor::class)
+		register(IJobController::class, JobController::class)
+		register(IJobStats::class, JobStats::class)
+	}
 
-    private fun IContainer.registerHttpServices() {
-        register(IHttpServer::class, HttpServer::class)
-        register(ILinkGenerator::class, LinkGenerator::class)
-        register(IPageService::class, PageService::class)
-        register(IDiscoveryService::class, DiscoveryService::class)
-        register(IScraper::class, Scraper::class)
-    }
+	private fun IContainer.registerHttpServices() {
+		register(IHttpServer::class, HttpServer::class)
+		register(ILinkGenerator::class, LinkGenerator::class)
+		register(IPageService::class, PageService::class)
+		register(IDiscoveryService::class, DiscoveryService::class)
+		register(IScraper::class, Scraper::class)
+	}
 }

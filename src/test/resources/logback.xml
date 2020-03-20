@@ -1,19 +1,19 @@
 <configuration>
-    <contextName>Core</contextName>
-    <shutdownHook/>
+	<contextName>Core</contextName>
+	<shutdownHook/>
 
-    <appender name="file" class="ch.qos.logback.core.FileAppender">
-        <file>logs/test.log</file>
-        <append>false</append>
-        <encoder>
-            <pattern>%d{YYYY-mm-dd HH:mm:ss.SSS} %-5level %-18.18thread %-28.28logger{28} [job: %36.36X{jobId}]: %msg%n</pattern>
-        </encoder>
-    </appender>
+	<appender name="file" class="ch.qos.logback.core.FileAppender">
+		<file>logs/test.log</file>
+		<append>false</append>
+		<encoder>
+			<pattern>%d{YYYY-mm-dd HH:mm:ss.SSS} %-5level %-18.18thread %-28.28logger{28} [job: %36.36X{jobId}]: %msg%n</pattern>
+		</encoder>
+	</appender>
 
-    <logger name="com.zaxxer" level="off"/>
-    <logger name="Exposed" level="off"/>
+	<logger name="com.zaxxer" level="off"/>
+	<logger name="Exposed" level="off"/>
 
-    <root level="trace">
-        <appender-ref ref="file"/>
-    </root>
+	<root level="trace">
+		<appender-ref ref="file"/>
+	</root>
 </configuration>

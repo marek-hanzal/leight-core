@@ -7,10 +7,10 @@ import kotlin.test.assertSame
 import kotlin.time.ExperimentalTime
 
 class JobManagerTest {
-    @ExperimentalTime
-    @Test
-    fun `container support`() {
-        val container = ContainerFactory.container()
-        assertSame(container.create(IJobManager::class), container.create(IJobManager::class))
-    }
+	@ExperimentalTime
+	@Test
+	fun `container support`() {
+		val container = ContainerFactory.container()
+		assertSame(container.create(IJobManager::class), container.create(IJobManager::class))
+	}
 }

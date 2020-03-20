@@ -4,11 +4,11 @@ import java.util.*
 import kotlin.reflect.KClass
 
 interface IFactory<T> {
-    fun getUuid(): UUID
+	fun getUuid(): UUID
 
-    fun getName(): String
+	fun getName(): String
 
-    fun getReflection(): Array<KClass<*>>
+	fun getReflection(): Array<KClass<*>>
 
-    fun create(container: IContainer, params: Array<*>? = null): T
+	fun create(container: IContainer, params: Array<*>? = null): T
 }
